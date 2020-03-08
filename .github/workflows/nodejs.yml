@@ -25,8 +25,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
         env: # Or as an environment variable
           PORT: ${{ secrets.PORT }}
-          MONGODB_CONNECTION_STRING:{{ secrets.MONGODB_CONNECTION_STRING }}
-          REDIS_HOST: {{ secrets.REDIS_HOST }}
+          MONGODB_CONNECTION_STRING: ${{ secrets.MONGODB_CONNECTION_STRING }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
       - run: yarn install --frozen-lockfile
       - run: yarn build
       - run: yarn citest
