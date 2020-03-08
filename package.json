@@ -1,0 +1,58 @@
+{
+  "name": "node-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Shtokarev/NodeBackend.git",
+  "author": "Shtokarev Yuriy <shtokarev@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint  --ext .ts ./src",
+    "fix": "eslint --fix  --ext .ts ./src",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "yarn build && env-cmd -f ./dev/.env node dist/index.js",
+    "test": "yarn build && env-cmd -f ./dev/.env jest src/tests/**",
+    "test:tap": "env-cmd -f ./dev/.env yarn test --coverage --reporters=jest-tap-reporter"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,ts}"
+    ],
+    "verbose": true
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "env-cmd": "^10.0.1",
+    "express": "^4.17.1",
+    "mongodb": "^3.5.1",
+    "redis": "^3.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "@babel/preset-typescript": "^7.8.3",
+    "@types/body-parser": "^1.17.1",
+    "@types/express": "^4.17.2",
+    "@types/jest": "^24.9.0",
+    "@types/mongodb": "^3.3.14",
+    "@types/redis": "^2.8.16",
+    "@typescript-eslint/eslint-plugin": "^2.16.0",
+    "@typescript-eslint/parser": "^2.16.0",
+    "babel-jest": "^25.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-jest": "^23.6.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "supertest": "^4.0.2",
+    "typescript": "^3.7.5"
+  }
+}
