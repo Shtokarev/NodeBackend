@@ -11,7 +11,8 @@
     "build": "tsc",
     "prestart": "npm run build",
     "start": "yarn build && env-cmd -f ./dev/.env node dist/index.js",
-    "test": "yarn build && env-cmd -f ./dev/.env jest src/tests/**",
+    "t": "yarn build && env-cmd -f ./dev/.env jest src/tests/**",
+    "test": "jest src/tests/**",
     "test:tap": "env-cmd -f ./dev/.env yarn test --coverage --reporters=jest-tap-reporter"
   },
   "jest": {
@@ -51,6 +52,7 @@
     "eslint-plugin-jest": "^23.6.0",
     "eslint-plugin-prettier": "^3.1.2",
     "jest": "^24.9.0",
+    "jest-tap-reporter": "^1.9.0",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2",
     "typescript": "^3.7.5"
