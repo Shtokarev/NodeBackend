@@ -11,8 +11,8 @@
     "build": "tsc",
     "prestart": "npm run build",
     "start": "yarn build && env-cmd -f ./dev/.env node dist/index.js",
-    "t": "yarn build && env-cmd -f ./dev/.env jest src/tests/**",
-    "test": "jest src/tests/**",
+    "test": "yarn build && env-cmd -f ./dev/.env jest src/tests/**",
+    "citest": "jest src/tests/**",
     "test:tap": "env-cmd -f ./dev/.env yarn test --coverage --reporters=jest-tap-reporter"
   },
   "jest": {
