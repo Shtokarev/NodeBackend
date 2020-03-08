@@ -23,7 +23,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: echo "::set-env name=PORT::8000"
+        env: # Or as an environment variable
+          PORT: ${{ secrets.PORT }}
       - run: echo "::set-env name=MONGODB_CONNECTION_STRING::mongodb://localhost:27017/test"
       - run: echo "::set-env name=REDIS_HOST::localhost"
       - run: yarn install --frozen-lockfile
