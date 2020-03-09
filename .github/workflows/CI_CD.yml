@@ -45,12 +45,20 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn build
       - run: yarn ci_test
+
+      - name: Install ssh-agent
+        run: sudo apt-get install openssh-client
+
+      - name: Install curl
+        run: sudo apt-get install curl
+
       - name: Create .ssh files
         env:
           ENV_FILE: ${{ secrets.ENV_FILE }}
         run: |
           pwd
           whoami
+          eval $(ssh-agent -s)
       # 'which ssh-agent || ( apk update && apk add openssh-client )'
       # 'which curl || apk add curl'
       # eval $(ssh-agent -s)
