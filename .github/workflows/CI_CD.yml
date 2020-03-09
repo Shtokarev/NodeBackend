@@ -33,15 +33,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-        # env: # Or as an environment variable
-        #   PORT: ${{ secrets.PORT }}
-        #   MONGODB_CONNECTION_STRING: ${{ secrets.MONGODB_CONNECTION_STRING }}
-        #   REDIS_HOST: ${{ secrets.REDIS_HOST }}
-        #   ENV_FILE: ${{ secrets.ENV_FILE }}
-      # - run: echo "::set-env name=PORT::8000"
-      # - run: echo "::set-env name=MONGODB_CONNECTION_STRING::mongodb://localhost:27017/test"
-      # - run: echo "::set-env name=REDIS_HOST::${{ secrets.REDIS_HOST }}"
-
       - run: yarn install --frozen-lockfile
 
       - name: Run tests
@@ -71,15 +62,12 @@ jobs:
         run: |
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf ~/_tmp/"
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf ~/_old/"
-
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mkdir ~/_tmp/"
           scp -P $DEPLOY_PORT -r ./dist/* $DEPLOY_USER_HOST:~/_tmp/
           scp -P $DEPLOY_PORT -r ./package.json $DEPLOY_USER_HOST:~/nodebackend/
           scp -P $DEPLOY_PORT -r ./yarn.lock $DEPLOY_USER_HOST:~/nodebackend/
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "cd ~/nodebackend && yarn install --production"
-
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "pm2 stop index"
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mv ~/nodebackend/dist ~/_old && mv ~/_tmp ~/nodebackend/dist"
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "pm2 start index"
-
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf ~/_tmp"
