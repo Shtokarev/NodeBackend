@@ -20,10 +20,24 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Print a greeting
+        env:
+          MY_VAR: Hi there! My name is
+          FIRST_NAME: Mona
+          MIDDLE_NAME: The
+          ENV_FILE: ${{ secrets.ENV_FILE }}
+        run: |
+          echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $ENV_FILE.
+
+      - name: Display the path
+        run: echo $PATH
+        shell: bash
+
       - name: Create .env file
         run: |
-          echo "$ENV_FILE"  > .env
+          echo "$ENV_FILE" > .env
           cat .env
+        shell: bash
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
