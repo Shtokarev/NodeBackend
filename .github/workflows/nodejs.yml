@@ -27,8 +27,8 @@ jobs:
           mkdir dev
           echo "$ENV_FILE" > ./dev/.env
           cat ./dev/.env
-        # shell: bash
 
+        # shell: bash
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -71,8 +71,3 @@ jobs:
           ssh-keyscan -p $PORT $HOST >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
         shell: bash
-        env:
-          CI: true
-
-
-      
