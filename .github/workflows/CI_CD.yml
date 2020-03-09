@@ -57,6 +57,6 @@ jobs:
           chmod 700 ~/.ssh
           ssh-keyscan -p $PORT $HOST >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-        shell: bash
+        # shell: bash
       env:
           CI: true
