@@ -19,7 +19,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - name: Create .env file
         env:
           ENV_FILE: ${{ secrets.ENV_FILE }}
@@ -46,18 +45,6 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn build
       - run: yarn ci_test
-        env:
-          CI: true
-
-  deploy:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x]
-
-    steps:
-      - uses: actions/checkout@v2
       - name: Create .ssh files
         env:
           ENV_FILE: ${{ secrets.ENV_FILE }}
@@ -71,3 +58,5 @@ jobs:
           ssh-keyscan -p $PORT $HOST >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
         shell: bash
+        env:
+          CI: true
