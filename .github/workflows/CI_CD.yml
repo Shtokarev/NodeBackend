@@ -67,15 +67,13 @@ jobs:
       - name: Copy bundle
         env:
           DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
-          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER_HOST: ${{ secrets.DEPLOY_USER_HOST }}
         run: |
-        delivery@shtokarev.site
-          ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "rm -rf ~/_tmp/"
-          ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "mkdir ~/_tmp/"
-          scp -P $DEPLOY_PORT -r dist/* $DEPLOY_USER@$DEPLOY_HOST:~/_tmp/
-        # ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "mv /usr/share/nginx/html/production /usr/share/nginx/html/production_old && mv /usr/share/nginx/html/_tmp_production/ /usr/share/nginx/html/production/"
-        # ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "rm -rf /usr/share/nginx/html/production_old"
+          ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf ~/_tmp/"
+          ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mkdir ~/_tmp/"
+          scp -P $DEPLOY_PORT -r dist/* $DEPLOY_USER_HOST:~/_tmp/
+        # ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mv /usr/share/nginx/html/production /usr/share/nginx/html/production_old && mv /usr/share/nginx/html/_tmp_production/ /usr/share/nginx/html/production/"
+        # ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf /usr/share/nginx/html/production_old"
 
         #  /home/ec2-user/nodebackend
 
