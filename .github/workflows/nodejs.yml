@@ -49,7 +49,6 @@ jobs:
         env:
           CI: true
 
-jobs:
   deploy:
     runs-on: ubuntu-latest
 
