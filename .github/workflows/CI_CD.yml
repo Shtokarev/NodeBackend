@@ -60,10 +60,10 @@ jobs:
 
       - name: Create .ssh files
         env:
-          ENV_FILE: ${{ secrets.ENV_FILE }}
+          DEPLOY_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "$ENV_FILE" | tr -d '\r' > ~/.ssh/id_rsa
+          echo "$DEPLOY_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 700 ~/.ssh/id_rsa
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
