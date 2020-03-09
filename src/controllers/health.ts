@@ -13,6 +13,7 @@ interface ServerStatus {
 
 export const health = async (req: Request, res: Response) => {
   const appStatus = { express: 'ok' } as ServerStatus;
+  logger.log('incoming GET /health');
 
   let status = 200;
 
