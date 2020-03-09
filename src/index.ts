@@ -1,3 +1,5 @@
+import * as sentry from '@sentry/node';
+
 import logger from './utils/logger';
 import { initMongodbClient } from './utils/init-mongo';
 import { initRedisClient } from './utils/init-redis';
@@ -5,9 +7,9 @@ import {
   PORT,
   REDIS_HOST,
   MONGODB_CONNECTION_STRING,
+  SENTRY_DSN,
 } from './utils/env-loader';
 import initApp, { AppConfiguration } from './app';
-
 
 logger.init(console);
 
@@ -28,7 +30,13 @@ const loadAppDependencies = async (): Promise<AppConfiguration> => {
     logger.log(error);
   }
 
-  return { db, redis };
+  try {
+    sentry.init({ dsn: SENTRY_DSN });
+  } catch (error) {
+    logger.log(error);
+  }
+
+  return { db, redis, sentry };
 };
 
 const loadApplication = async () => {
