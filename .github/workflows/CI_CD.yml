@@ -70,6 +70,8 @@ jobs:
           DEPLOY_USER_HOST: ${{ secrets.DEPLOY_USER_HOST }}
         run: |
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf ~/_tmp/"
+          ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf ~/_old/"
+
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mkdir ~/_tmp/"
           scp -P $DEPLOY_PORT -r ./dist/* $DEPLOY_USER_HOST:~/_tmp/
           scp -P $DEPLOY_PORT -r ./package.json $DEPLOY_USER_HOST:~/nodebackend/
