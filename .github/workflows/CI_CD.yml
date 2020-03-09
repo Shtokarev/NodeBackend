@@ -74,6 +74,10 @@ jobs:
           scp -P $DEPLOY_PORT -r ./dist/* $DEPLOY_USER_HOST:~/_tmp/
           scp -P $DEPLOY_PORT -r ./package.json $DEPLOY_USER_HOST:~/nodebackend/
           scp -P $DEPLOY_PORT -r ./yarn.lock $DEPLOY_USER_HOST:~/nodebackend/
-          ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mv ~/nodebackend/dist ~/_old && mv ~/_tmp ~/nodebackend/dist"
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "cd ~/nodebackend && yarn install --production"
+
+          ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "pm2 stop index"
+          ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mv ~/nodebackend/dist ~/_old && mv ~/_tmp ~/nodebackend/dist"
+          ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "pm2 start index"
+
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf ~/_tmp"
