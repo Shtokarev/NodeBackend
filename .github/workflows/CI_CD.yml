@@ -47,15 +47,13 @@ jobs:
       - name: Run tests
         run: yarn ci_test
 
+      - name: Run build
+        run: yarn build
+
       - name: Production node_modules
         run: |
           rm -rf ./node_modules/
           yarn install --production
-
-      - name: Run build
-        run: yarn build
-
-      - run: yarn install --frozen-lockfile
 
       - name: Create .ssh files
         env:
