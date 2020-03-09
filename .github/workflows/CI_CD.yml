@@ -49,14 +49,16 @@ jobs:
         env:
           ENV_FILE: ${{ secrets.ENV_FILE }}
         run: |
+          pwd
+          whoami
           'which ssh-agent || ( apk update && apk add openssh-client )'
-          'which curl || apk add curl'
-          eval $(ssh-agent -s)
-          echo "$DEPLOY_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          ssh-keyscan -p $PORT $HOST >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
-        # shell: bash
+          # 'which curl || apk add curl'
+          # eval $(ssh-agent -s)
+          # echo "$DEPLOY_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+          # mkdir -p ~/.ssh
+          # chmod 700 ~/.ssh
+          # ssh-keyscan -p $PORT $HOST >> ~/.ssh/known_hosts
+          # chmod 644 ~/.ssh/known_hosts
+
       env:
           CI: true
