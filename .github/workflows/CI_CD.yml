@@ -47,8 +47,15 @@ jobs:
       - name: Run tests
         run: yarn ci_test
 
+      - name: Production node_modules
+        run: |
+          rm -rf ./node_modules/
+          yarn install --production
+
       - name: Run build
         run: yarn build
+
+      - run: yarn install --frozen-lockfile
 
       - name: Create .ssh files
         env:
@@ -71,6 +78,7 @@ jobs:
         run: |
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf ~/_tmp/"
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mkdir ~/_tmp/"
-          scp -P $DEPLOY_PORT -r dist/* $DEPLOY_USER_HOST:~/_tmp/
+          scp -P $DEPLOY_PORT -r ./dist $DEPLOY_USER_HOST:~/_tmp/
+          scp -P $DEPLOY_PORT -r ./node_modules $DEPLOY_USER_HOST:~/_tmp/
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mv ~/nodebackend ~/_old && mv ~/_tmp ~/nodebackend"
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf ~/_tmp"
