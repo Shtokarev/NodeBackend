@@ -43,20 +43,12 @@ jobs:
       # - run: echo "::set-env name=REDIS_HOST::${{ secrets.REDIS_HOST }}"
 
       - run: yarn install --frozen-lockfile
-      - run: yarn build
-      - run: yarn ci_test
 
-      - name: Install ssh-agent
-        run: sudo apt-get install openssh-client
+      - name: Run tests
+        run: yarn ci_test
 
-      - name: Install curl
-        run: sudo apt-get install curl
-
-      - name: pwd
-        run: pwd
-
-      - name: whoami
-        run: whoami
+      - name: Run build
+        run: yarn build
 
       - name: Create .ssh files
         env:
@@ -71,6 +63,20 @@ jobs:
           ssh-add ~/.ssh/id_rsa
           ssh-keyscan -p $DEPLOY_PORT $DEPLOY_HOST >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
+
+      - name: Copy bundle
+        env:
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          ssh -p $DEPLOY_PORT $DEPLOY_USER "rm -rf ~/_tmp/"
+          ssh -p $DEPLOY_PORT $DEPLOY_USER "mkdir ~/_tmp/"
+          scp -P $DEPLOY_PORT -r dist/* $DEPLOY_USER:~/_tmp/
+        # ssh -p $DEPLOY_PORT $DEPLOY_USER "mv /usr/share/nginx/html/production /usr/share/nginx/html/production_old && mv /usr/share/nginx/html/_tmp_production/ /usr/share/nginx/html/production/"
+        # ssh -p $DEPLOY_PORT $DEPLOY_USER "rm -rf /usr/share/nginx/html/production_old"
+
+          /home/ec2-user/nodebackend
         # eval $(ssh-agent -s)
         # echo "$ENV_FILE" | tr -d '\r' | ssh-add - > /dev/null
         # mkdir -p ~/.ssh
