@@ -76,7 +76,8 @@ jobs:
         # ssh -p $DEPLOY_PORT $DEPLOY_USER "mv /usr/share/nginx/html/production /usr/share/nginx/html/production_old && mv /usr/share/nginx/html/_tmp_production/ /usr/share/nginx/html/production/"
         # ssh -p $DEPLOY_PORT $DEPLOY_USER "rm -rf /usr/share/nginx/html/production_old"
 
-          /home/ec2-user/nodebackend
+        #  /home/ec2-user/nodebackend
+
         # eval $(ssh-agent -s)
         # echo "$ENV_FILE" | tr -d '\r' | ssh-add - > /dev/null
         # mkdir -p ~/.ssh
