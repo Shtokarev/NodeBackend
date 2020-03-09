@@ -27,7 +27,7 @@ jobs:
           mkdir dev
           echo "$ENV_FILE" > ./dev/.env
           cat ./dev/.env
-        shell: bash
+        # shell: bash
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -48,3 +48,32 @@ jobs:
       - run: yarn ci_test
         env:
           CI: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create .ssh files
+        env:
+          ENV_FILE: ${{ secrets.ENV_FILE }}
+        run: |
+          'which ssh-agent || ( apk update && apk add openssh-client )'
+          'which curl || apk add curl'
+          eval $(ssh-agent -s)
+          echo "$DEPLOY_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -p $PORT $HOST >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+        shell: bash
+        env:
+          CI: true
+
+
+      
