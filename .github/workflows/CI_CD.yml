@@ -72,8 +72,8 @@ jobs:
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf ~/_tmp/"
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mkdir ~/_tmp/"
           scp -P $DEPLOY_PORT -r ./dist $DEPLOY_USER_HOST:~/_tmp/
-          scp -P $DEPLOY_PORT -r ./package.json $DEPLOY_USER_HOST:~/_tmp/
-          scp -P $DEPLOY_PORT -r ./yarn.lock $DEPLOY_USER_HOST:~/_tmp/
-          ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "cd ~/_tmp && yarn install --production"
-          ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mv ~/nodebackend ~/_old && mv ~/_tmp ~/nodebackend"
+          scp -P $DEPLOY_PORT -r ./package.json $DEPLOY_USER_HOST:~/nodebackend/
+          scp -P $DEPLOY_PORT -r ./yarn.lock $DEPLOY_USER_HOST:~/nodebackend/
+          ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mv ~/nodebackend/dist ~/_old && mv ~/_tmp ~/nodebackend/dist"
+          ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "cd ~/nodebackend && yarn install --production"
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf ~/_tmp"
