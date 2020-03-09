@@ -5,7 +5,7 @@ name: Node.js CI/CD Deploy
 
 on:
   push:
-    branches: [test-ci-cd]
+    branches: [master]
   pull_request:
     branches: [master]
 
