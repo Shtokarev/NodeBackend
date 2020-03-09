@@ -61,12 +61,16 @@ jobs:
       - name: Create .ssh files
         env:
           DEPLOY_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
         run: |
           mkdir -p ~/.ssh
           echo "$DEPLOY_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 700 ~/.ssh/id_rsa
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
+          ssh-keyscan -p $DEPLOY_PORT $DEPLOY_HOST >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
         # eval $(ssh-agent -s)
         # echo "$ENV_FILE" | tr -d '\r' | ssh-add - > /dev/null
         # mkdir -p ~/.ssh
