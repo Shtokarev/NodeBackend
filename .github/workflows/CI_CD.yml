@@ -70,11 +70,12 @@ jobs:
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
         run: |
-          ssh -p $DEPLOY_PORT $DEPLOY_USER "rm -rf ~/_tmp/"
-          ssh -p $DEPLOY_PORT $DEPLOY_USER "mkdir ~/_tmp/"
-          scp -P $DEPLOY_PORT -r dist/* $DEPLOY_USER:~/_tmp/
-        # ssh -p $DEPLOY_PORT $DEPLOY_USER "mv /usr/share/nginx/html/production /usr/share/nginx/html/production_old && mv /usr/share/nginx/html/_tmp_production/ /usr/share/nginx/html/production/"
-        # ssh -p $DEPLOY_PORT $DEPLOY_USER "rm -rf /usr/share/nginx/html/production_old"
+        delivery@shtokarev.site
+          ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "rm -rf ~/_tmp/"
+          ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "mkdir ~/_tmp/"
+          scp -P $DEPLOY_PORT -r dist/* $DEPLOY_USER@$DEPLOY_HOST:~/_tmp/
+        # ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "mv /usr/share/nginx/html/production /usr/share/nginx/html/production_old && mv /usr/share/nginx/html/_tmp_production/ /usr/share/nginx/html/production/"
+        # ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST "rm -rf /usr/share/nginx/html/production_old"
 
         #  /home/ec2-user/nodebackend
 
