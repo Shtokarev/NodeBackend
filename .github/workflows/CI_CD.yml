@@ -72,33 +72,5 @@ jobs:
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf ~/_tmp/"
           ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mkdir ~/_tmp/"
           scp -P $DEPLOY_PORT -r dist/* $DEPLOY_USER_HOST:~/_tmp/
-        # ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mv /usr/share/nginx/html/production /usr/share/nginx/html/production_old && mv /usr/share/nginx/html/_tmp_production/ /usr/share/nginx/html/production/"
-        # ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf /usr/share/nginx/html/production_old"
-
-        #  /home/ec2-user/nodebackend
-
-        # eval $(ssh-agent -s)
-        # echo "$ENV_FILE" | tr -d '\r' | ssh-add - > /dev/null
-        # mkdir -p ~/.ssh
-        # chmod 700 ~/.ssh
-        # ssh-keyscan -p $PORT $HOST >> ~/.ssh/known_hosts
-        # chmod 644 ~/.ssh/known_hosts
-
-        # - mkdir -p ~/.ssh
-        # - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-        # - chmod 700 ~/.ssh/id_rsa
-        # - eval "$(ssh-agent -s)"
-        # - ssh-add ~/.ssh/id_rsa
-        # - ssh-keyscan -H 'gitlab.com' >> ~/.ssh/known_hosts
-        # - npm install
-
-      # 'which ssh-agent || ( apk update && apk add openssh-client )'
-      # 'which curl || apk add curl'
-      # eval $(ssh-agent -s)
-      # echo "$DEPLOY_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-      # mkdir -p ~/.ssh
-      # chmod 700 ~/.ssh
-      # ssh-keyscan -p $PORT $HOST >> ~/.ssh/known_hosts
-      # chmod 644 ~/.ssh/known_hosts
-      # env:
-      #     CI: true
+          ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "mv ~/nodebackend ~/_old && mv ~/_tmp ~/nodebackend"
+          ssh -p $DEPLOY_PORT $DEPLOY_USER_HOST "rm -rf ~/_tmp"
