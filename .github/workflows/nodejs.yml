@@ -32,8 +32,10 @@ jobs:
       # - run: echo "::set-env name=PORT::8000"
       # - run: echo "::set-env name=MONGODB_CONNECTION_STRING::mongodb://localhost:27017/test"
       # - run: echo "::set-env name=REDIS_HOST::${{ secrets.REDIS_HOST }}"
-      - run: echo "$ENV_FILE"  > .env
-      - run: cat .env
+
+      - run: |
+          echo "$ENV_FILE"  > .env
+          cat .env
       - run: yarn install --frozen-lockfile
       - run: yarn build
       - run: yarn citest
