@@ -5,9 +5,9 @@ name: Node.js CI/CD Deploy
 
 on:
   push:
-    branches: [centry]
+    branches: [master, dev]
   pull_request:
-    branches: [centry]
+    branches: [master, dev]
 
 jobs:
   build:
