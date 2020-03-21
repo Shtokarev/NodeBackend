@@ -2,10 +2,12 @@ import bodyParser from 'body-parser';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import { Db } from 'mongodb';
 import * as Sentry from '@sentry/node';
+import cors from 'cors';
 
 import { AsyncRedisClient } from './utils/init-redis';
 import logger from './utils/logger';
 import installRoutes from './routes';
+import { CORS_ORIGIN } from './utils/env-loader';
 
 
 export type Application = Express & {
@@ -35,7 +37,7 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
     return application;
   }
 
-  logger.log('application initialized');
+  logger.log('application initialized.');
 
   appConfig = config;
   application = express();
@@ -46,6 +48,18 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
 
   application.use(bodyParser.urlencoded({ extended: true }));
   application.use(bodyParser.json());
+
+  const whiteCorsList = [CORS_ORIGIN, 'localhost:3000'];
+  const corsOptions = {
+    origin: function (origin: string, callback: Function) {
+      if (whiteCorsList.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  };
+  application.use(cors(corsOptions));
 
   await installRoutes(application);
 

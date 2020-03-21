@@ -34,7 +34,7 @@ export async function initRedisClient({ host }: RedisFactoryProps): Promise<Asyn
 
   enableRedisAutoReconnect(redisClient);
 
-  logger.log(`redis connected: ${host}`);
+  logger.log(`redis connected: ${host}.`);
 
   return redisClient;
 }

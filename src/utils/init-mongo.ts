@@ -30,7 +30,7 @@ export const initMongodbClient = async ({ connectionString }: MongodbFactoryProp
       });
     });
 
-    logger.log(`mongodb connected: ${connectionString}`);
+    logger.log(`mongodb connected: ${connectionString}.`);
   } catch (error) {
     logger.error(`Error in mongoClient.connect: ${error}`);
   }
