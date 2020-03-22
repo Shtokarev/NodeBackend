@@ -1,7 +1,7 @@
 import * as Redis from 'redis';
 import { promisify } from 'util';
 
-import logger from './logger';
+import logger from '../utils/logger';
 
 export interface RedisFactoryProps {
   host: string;
@@ -16,7 +16,7 @@ export interface AsyncRedisClient extends Redis.RedisClient {
   smembersAsync: (key: string) => Promise<string[]>;
 }
 
-let redisClient: AsyncRedisClient;
+let redisClient: AsyncRedisClient = null;
 
 export async function initRedisClient({ host }: RedisFactoryProps): Promise<AsyncRedisClient> {
   if (redisClient) {
@@ -34,7 +34,7 @@ export async function initRedisClient({ host }: RedisFactoryProps): Promise<Asyn
 
   enableRedisAutoReconnect(redisClient);
 
-  logger.log(`redis connected: ${host}.`);
+  logger.log(`redis connected: ${host}`);
 
   return redisClient;
 }

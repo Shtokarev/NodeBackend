@@ -1,6 +1,6 @@
 import { MongoClient, MongoError, Db } from 'mongodb';
 
-import logger from './logger';
+import logger from '../utils/logger';
 
 export interface MongodbFactoryProps {
   connectionString: string;
@@ -30,7 +30,7 @@ export const initMongodbClient = async ({ connectionString }: MongodbFactoryProp
       });
     });
 
-    logger.log(`mongodb connected: ${connectionString}.`);
+    logger.log(`mongodb connected: ${connectionString}`);
   } catch (error) {
     logger.error(`Error in mongoClient.connect: ${error}`);
   }

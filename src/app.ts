@@ -4,22 +4,26 @@ import { Db } from 'mongodb';
 import * as Sentry from '@sentry/node';
 import cors from 'cors';
 
-import { AsyncRedisClient } from './utils/init-redis';
+import { AsyncRedisClient } from './initialization/init-redis';
+import { DBSequelize } from './initialization/init-sequelize';
 import logger from './utils/logger';
 import installRoutes from './routes';
 import { CORS_ORIGIN } from './utils/env-loader';
 
 
-export type Application = Express & {
+export interface Application extends Express {
   locals: {
     db: Db;
     redis: AsyncRedisClient;
+    sentry: typeof Sentry;
+    dbSequelize: DBSequelize;
   };
 };
 
 export interface AppConfiguration {
   db?: Db;
   redis?: AsyncRedisClient;
+  dbSequelize?: DBSequelize;
   sentry?: typeof Sentry;
 }
 
@@ -37,8 +41,6 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
     return application;
   }
 
-  logger.log('application initialized.');
-
   appConfig = config;
   application = express();
 
@@ -50,6 +52,8 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
   application.use(bodyParser.json());
 
   const whiteCorsList = [CORS_ORIGIN, 'localhost:3000'];
+  logger.log(`Enabled CORS origin: ${whiteCorsList}`);
+
   const corsOptions = {
     origin: function (origin: string, callback: Function) {
       if (whiteCorsList.indexOf(origin) !== -1 || !origin) {
@@ -88,6 +92,9 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
   application.locals.db = config.db;
   application.locals.redis = config.redis;
   application.locals.sentry = config.sentry;
+  application.locals.dbSequelize = config.dbSequelize;
+
+  logger.log('application initialized');
 
   return application;
 };

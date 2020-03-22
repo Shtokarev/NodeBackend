@@ -1,25 +1,31 @@
-export const { PORT, MONGODB_CONNECTION_STRING, REDIS_HOST, SENTRY_DSN, CORS_ORIGIN } = process.env;
+import logger from './logger';
 
-if (!PORT) {
-  throw new Error('PORT environment variable is required.');
-}
+export const {
+  PORT,
+  MONGODB_CONNECTION_STRING,
+  REDIS_HOST,
+  SENTRY_DSN,
+  CORS_ORIGIN,
+  MONGOOSE_CONNECTION_STRING,
+  SEQUELIZE_CONNECTION_STRING,
+} = process.env;
 
-if (!MONGODB_CONNECTION_STRING) {
-  throw new Error(
-    'MONGODB_CONNECTION_STRING environment variable is required.'
-  );
-}
+export const NODE_ENV = process.env.NODE_ENV || 'development';
 
-if (!REDIS_HOST) {
-  throw new Error('REDIS_HOST environment variable is required.');
-}
+const requiredEnvVariables = [
+  'PORT',
+  'MONGODB_CONNECTION_STRING',
+  'REDIS_HOST',
+  'SENTRY_DSN',
+  'CORS_ORIGIN',
+  'MONGOOSE_CONNECTION_STRING',
+  'SEQUELIZE_CONNECTION_STRING',
+];
 
-if (!SENTRY_DSN) {
-  throw new Error('SENTRY_DSN environment variable is required.');
-}
+requiredEnvVariables.forEach(name => {
+  if (!process.env[name]) {
+    throw new Error(`${name} environment variable is required`);
+  }
+});
 
-if (!CORS_ORIGIN) {
-  throw new Error('CORS_ORIGIN environment variable is required.');
-}
-
-console.log('environment variables loaded.');
+logger.log('environment variables loaded');

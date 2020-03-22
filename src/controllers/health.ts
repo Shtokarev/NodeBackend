@@ -9,6 +9,7 @@ interface ServerStatus {
   express: string;
   mongodb: string;
   redis: string;
+  sequelize: string;
 }
 
 export const health = async (req: Request, res: Response) => {
@@ -46,6 +47,20 @@ export const health = async (req: Request, res: Response) => {
   } catch (error) {
     logger.error(error);
     appStatus.redis = error?.message;
+    status = 500;
+  }
+
+  try {
+    if (!application.locals.dbSequelize) {
+      throw new Error('sequelize not loaded');
+    }
+
+    await application.locals.dbSequelize.sequelize.authenticate();
+
+    appStatus.sequelize = 'ok';
+  } catch (error) {
+    logger.error(error);
+    appStatus.sequelize = error?.message;
     status = 500;
   }
 
