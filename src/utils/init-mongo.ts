@@ -1,4 +1,5 @@
 import { MongoClient, MongoError, Db } from 'mongodb';
+import { Environment } from './env-loader';
 
 import logger from './logger';
 
@@ -37,3 +38,9 @@ export const initMongodbClient = async ({ connectionString }: MongodbFactoryProp
 
   return db;
 };
+
+export const factory = (envLoader: Environment): Promise<Db> => {
+  return initMongodbClient({ connectionString: envLoader.MONGODB_CONNECTION_STRING });
+};
+
+export default factory;

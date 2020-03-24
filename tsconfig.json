@@ -3,17 +3,28 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
-    "lib": ["es6"],
+    "lib": [
+      "es6"
+    ],
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*"],
-      "src/*": ["./*"]
+      "*": [
+        "node_modules/*"
+      ],
+      "src/*": [
+        "./*"
+      ]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["src/tests"]
+  "include": [
+    "src/**/*",
+    "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "src/tests"
+  ]
 }
