@@ -1,6 +1,7 @@
 import bodyParser from 'body-parser';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import { Db } from 'mongodb';
+import * as Sentry from '@sentry/node';
 
 import { AsyncRedisClient } from './utils/init-redis';
 import logger from './utils/logger';
@@ -17,6 +18,7 @@ export type Application = Express & {
 export interface AppConfiguration {
   db?: Db;
   redis?: AsyncRedisClient;
+  sentry?: typeof Sentry;
 }
 
 interface ExpressError {
@@ -38,10 +40,18 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
   appConfig = config;
   application = express();
 
+  if (config?.sentry) {
+    application.use(config.sentry.Handlers.requestHandler());
+  }
+
   application.use(bodyParser.urlencoded({ extended: true }));
   application.use(bodyParser.json());
 
   await installRoutes(application);
+
+  if (config?.sentry) {
+    application.use(config.sentry.Handlers.errorHandler());
+  }
 
   application.use((error: ExpressError, req: Request, res: Response, next: NextFunction) => {
     const errorStatus = error.status || 500;
@@ -56,12 +66,14 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
 
     return res.status(errorStatus).json({
       message: error.message,
+      sentry: (res as Response & { sentry: unknown }).sentry,
     });
   }
   );
 
   application.locals.db = config.db;
   application.locals.redis = config.redis;
+  application.locals.sentry = config.sentry;
 
   return application;
 };

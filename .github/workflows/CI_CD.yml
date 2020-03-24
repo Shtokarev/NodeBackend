@@ -5,9 +5,9 @@ name: Node.js CI/CD Deploy
 
 on:
   push:
-    branches: [master]
+    branches: [master, dev]
   pull_request:
-    branches: [master]
+    branches: [master, dev]
 
 jobs:
   build:
@@ -25,7 +25,6 @@ jobs:
         run: |
           mkdir dev
           echo "$ENV_FILE" > ./dev/.env
-          cat ./dev/.env
 
         # shell: bash
       - name: Use Node.js ${{ matrix.node-version }}

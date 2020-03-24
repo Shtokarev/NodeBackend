@@ -3,12 +3,13 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
-    "lib": ["es6"],
+    "lib": ["es2017", "ESNext"],
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
+    "types": ["node", "jasmine"],
     "paths": {
       "*": ["node_modules/*"],
       "src/*": ["./*"]
