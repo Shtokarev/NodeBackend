@@ -23,5 +23,4 @@ describe('Test environment variables', () => {
   it('should have SENTRY_DSN', () => {
     expect(SENTRY_DSN).toEqual(jasmine.any(String));
   });
-
 });

@@ -1,4 +1,11 @@
-export const { PORT, MONGODB_CONNECTION_STRING, REDIS_HOST, SENTRY_DSN } = process.env;
+export const {
+  PORT,
+  MONGODB_CONNECTION_STRING,
+  REDIS_HOST,
+  SENTRY_DSN,
+  CLIENT_ID,
+  CLIENT_SECRET
+} = process.env;
 
 if (!PORT) {
   throw new Error('PORT environment variable is required.');
