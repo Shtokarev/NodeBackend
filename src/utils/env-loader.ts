@@ -25,4 +25,12 @@ if (!SENTRY_DSN) {
   throw new Error('SENTRY_DSN environment variable is required.');
 }
 
+if (!CLIENT_ID) {
+  throw new Error('SENTRY_DSN environment variable is required.');
+}
+
+if (!CLIENT_SECRET) {
+  throw new Error('SENTRY_DSN environment variable is required.');
+}
+
 console.log('environment variables loaded');

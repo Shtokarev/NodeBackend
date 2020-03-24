@@ -16,13 +16,15 @@ export const authGoogle = async (req: Request, res: Response) => {
     }
 
     let obj;
-    try {
-      obj = JSON.parse(state);
-    } catch (error) {
-      logger.error(error);
+    if (state) {
+      try {
+        obj = JSON.parse(state);
+      } catch (error) {
+        logger.error(error);
+      }
+      logger.log('state:');
+      logger.log(obj);
     }
-
-    logger.log(obj);
 
     const body = {
       client_id: CLIENT_ID,
@@ -47,14 +49,12 @@ export const authGoogle = async (req: Request, res: Response) => {
       headers: {
         'Authorization': `Bearer ${access_token}`,
       },
-      json: true // Automatically parses the JSON string in the response
+      json: true,
     });
 
     logger.log('incoming GET on route /authgoogle');
 
     res.json({ code, scope, googleResponse, googleResponse2 });
-    // res.send('Hello world!');
-    // throw new Error('test error');
   } catch (error) {
     logger.error(error.message);
     res.status(500).json(error);
