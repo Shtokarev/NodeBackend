@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { authGoogle } from '../controllers/authgoogle';
+import { googleCallback } from '../../controllers/auth/google';
 
 const authGoogleRoute = (router: Router) => {
-  router.get('/', authGoogle);
+  router.get('/callback', googleCallback);
 };
 
 export default authGoogleRoute;

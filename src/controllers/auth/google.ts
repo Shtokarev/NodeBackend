@@ -3,11 +3,11 @@
 import { Request, Response } from 'express';
 import rp from 'request-promise';
 
-import logger from '../utils/logger';
-import { CLIENT_ID, CLIENT_SECRET } from '../utils/env-loader';
+import logger from '../../utils/logger';
+import { CLIENT_ID, CLIENT_SECRET } from '../../utils/env-loader';
 
 
-export const authGoogle = async (req: Request, res: Response) => {
+export const googleCallback = async (req: Request, res: Response) => {
   const { error, code, scope, state } = req.query;
   try {
 
@@ -31,7 +31,7 @@ export const authGoogle = async (req: Request, res: Response) => {
       client_secret: CLIENT_SECRET,
       code,
       grant_type: 'authorization_code',
-      redirect_uri: 'http://shtokarev.site:8000/authgoogle'
+      redirect_uri: 'http://shtokarev.site:8000/api/auth/google/callback'
     };
 
     const googleResponse = await rp({
