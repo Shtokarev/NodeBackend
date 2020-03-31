@@ -4,7 +4,10 @@ export const {
   REDIS_HOST,
   SENTRY_DSN,
   CLIENT_ID,
-  CLIENT_SECRET
+  CLIENT_SECRET,
+  FB_APP_ID,
+  FB_REDIRECT_URI,
+  FB_CLIENT_SECRET,
 } = process.env;
 
 if (!PORT) {
@@ -26,11 +29,23 @@ if (!SENTRY_DSN) {
 }
 
 if (!CLIENT_ID) {
-  throw new Error('SENTRY_DSN environment variable is required.');
+  throw new Error('CLIENT_ID environment variable is required.');
 }
 
 if (!CLIENT_SECRET) {
-  throw new Error('SENTRY_DSN environment variable is required.');
+  throw new Error('CLIENT_SECRET environment variable is required.');
+}
+
+if (!FB_APP_ID) {
+  throw new Error('FB_APP_ID environment variable is required.');
+}
+
+if (!FB_REDIRECT_URI) {
+  throw new Error('FB_REDIRECT_URI environment variable is required.');
+}
+
+if (!FB_CLIENT_SECRET) {
+  throw new Error('FB_CLIENT_SECRET environment variable is required.');
 }
 
 console.log('environment variables loaded');
