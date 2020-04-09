@@ -1,16 +1,24 @@
 import { Application, Router } from 'express';
 import fs from 'fs';
 import path from 'path';
+
 import logger from '../utils/logger';
 
-const normalizedPath = path.join(__dirname);
 
-export default async (app: Application) => {
-  const fileList = fs.readdirSync(normalizedPath);
+const addRoutesFromFolder = async (subFoldersPath: string, app: Application) => {
+  const fileList = fs.readdirSync(path.join(__dirname, subFoldersPath));
 
-  for (const filename of fileList) {
+  for (const fileName of fileList) {
     try {
-      const filenameParts = filename.split('.');
+      const fullPath = path.join(__dirname, subFoldersPath, fileName);
+
+      const stat = fs.statSync(fullPath);
+      if (stat.isDirectory()) {
+        await addRoutesFromFolder(path.join(subFoldersPath, fileName) + '/', app);
+        continue;
+      }
+
+      const filenameParts = fileName.split('.');
       const routeName = filenameParts[0];
       const extension = filenameParts.pop();
 
@@ -19,13 +27,19 @@ export default async (app: Application) => {
       }
 
       const router = Router();
-      logger.log(`add route: ${`./${routeName}.${extension}`}`);
-      const routeModule = await import(`./${routeName}.${extension}`);
+      const routePath = `/api${subFoldersPath}${routeName}`;
+
+      logger.log(`add route: ${routePath} (${routeName}.${extension})`);
+      const routeModule = await import(fullPath);
       routeModule.default(router);
 
-      app.use(`/${routeName}`, router);
+      app.use(routePath, router);
     } catch (error) {
-      logger.log(`Error loading route in ${filename} ${error}`);
+      logger.log(`Error loading route in ${fileName} ${error}`);
     }
   }
+};
+
+export default async (app: Application) => {
+  await addRoutesFromFolder('/', app);
 };

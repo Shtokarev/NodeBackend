@@ -3,12 +3,12 @@ import request from 'supertest';
 import initApp, { killApplicaton } from '../app';
 
 
-describe('Server /health route', () => {
+describe('Server /api/health route', () => {
   let db;
   let redis;
   let result;
   let application;
-  const path = '/health';
+  const path = '/api/health';
 
   beforeAll(async () => {
     result = {

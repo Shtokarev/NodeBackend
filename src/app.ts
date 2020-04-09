@@ -45,7 +45,9 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
   }
 
   application.use(bodyParser.urlencoded({ extended: true }));
-  application.use(bodyParser.json());
+  application.use(bodyParser.json({
+    type: ['application/json', 'text/plain'],
+  }));
 
   await installRoutes(application);
 
