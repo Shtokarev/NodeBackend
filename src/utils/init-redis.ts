@@ -23,7 +23,7 @@ export async function initRedisClient({ host }: RedisFactoryProps): Promise<Asyn
     return redisClient;
   }
 
-  redisClient = Redis.createClient({ host }) as AsyncRedisClient;
+  redisClient = Redis.createClient({ host, retry_strategy }) as AsyncRedisClient;
 
   redisClient.getAsync = promisify(redisClient.get).bind(redisClient);
   redisClient.setAsync = promisify(redisClient.set).bind(redisClient);
@@ -44,7 +44,21 @@ function enableRedisAutoReconnect(client: AsyncRedisClient) {
     return;
   }
 
-  client.on('error', (error: unknown) => {
-    logger.error('Redis client error', error);
+  client.on('error', (error: Redis.RedisError) => {
+    logger.error('Redis client error', error.message);
   });
+}
+
+function retry_strategy(options: Redis.RetryStrategyOptions) {
+  if (options.error && options.error.code === 'ECONNREFUSED') {
+    return new Error('The server refused the connection');
+  }
+  if (options.total_retry_time > 1000 * 60 * 60) {
+    return new Error('Retry time exhausted');
+  }
+  if (options.attempt > 10) {
+    return undefined;
+  }
+
+  return Math.min(options.attempt * 100, 3000);
 }

@@ -3,9 +3,9 @@ import request from 'supertest';
 import initApp, { AppConfiguration, killApplicaton } from '../app';
 
 
-describe('Server /test route', () => {
+describe('Server /api/test route', () => {
   const config: AppConfiguration = {};
-  const path = '/test';
+  const path = '/api/test';
 
   let application;
 

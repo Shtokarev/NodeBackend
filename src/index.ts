@@ -1,4 +1,5 @@
 import * as sentry from '@sentry/node';
+import https from 'https';
 
 import logger from './utils/logger';
 import { initMongodbClient } from './utils/init-mongo';
@@ -8,6 +9,9 @@ import {
   REDIS_HOST,
   MONGODB_CONNECTION_STRING,
   SENTRY_DSN,
+  HTTPS_PORT,
+  key,
+  cert,
 } from './utils/env-loader';
 import initApp, { AppConfiguration } from './app';
 
@@ -41,11 +45,18 @@ const loadAppDependencies = async (): Promise<AppConfiguration> => {
 
 const loadApplication = async () => {
   try {
+
     const app = await initApp(await loadAppDependencies());
 
     app.listen(PORT, () => {
-      console.log(`server started at http://localhost:${PORT}`);
+      logger.log(`Http server started on port: ${PORT}`);
     });
+
+    if (key && cert) {
+      https.createServer({ key, cert }, app).listen(HTTPS_PORT, function () {
+        logger.log(`Https listening on port ${HTTPS_PORT}`);
+      });
+    }
   } catch (error) {
     logger.error(error);
   }

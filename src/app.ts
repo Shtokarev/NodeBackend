@@ -47,7 +47,9 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
   }
 
   application.use(bodyParser.urlencoded({ extended: true }));
-  application.use(bodyParser.json());
+  application.use(bodyParser.json({
+    type: ['application/json', 'text/plain'],
+  }));
 
   const whiteCorsList = [CORS_ORIGIN, 'localhost:3000'];
   const corsOptions = {
