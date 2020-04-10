@@ -18,6 +18,8 @@ export const {
   HTTPS_KEY,
   CHAT_API_URL,
   CHAT_API_TOKEN,
+  MEDIA_BUCKET,
+  MEDIA_BUCKET_REGION,
 } = process.env;
 
 if (!PORT) {
@@ -72,6 +74,14 @@ if (!CHAT_API_URL) {
 
 if (!CHAT_API_TOKEN) {
   throw new Error('CHAT_API_TOKEN environment variable is required.');
+}
+
+if (!MEDIA_BUCKET) {
+  throw new Error('MEDIA_BUCKET environment variable is required.');
+}
+
+if (!MEDIA_BUCKET_REGION) {
+  throw new Error('MEDIA_BUCKET_REGION environment variable is required.');
 }
 
 export let key: Buffer;
