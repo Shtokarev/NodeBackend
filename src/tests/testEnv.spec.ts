@@ -4,10 +4,19 @@ import {
   REDIS_HOST,
   MONGODB_CONNECTION_STRING,
   SENTRY_DSN,
+  CORS_ORIGIN,
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
+  GOOGLE_REDIRECT_URI,
+  FB_APP_ID,
+  FB_REDIRECT_URI,
+  FB_CLIENT_SECRET,
+  HTTPS_PORT,
+  HTTPS_CERT,
+  HTTPS_KEY,
+  CHAT_API_URL,
+  CHAT_API_TOKEN,
 } from '../utils/env-loader';
-
 
 describe('Test environment variables', () => {
   it('should have PORT', () => {
@@ -26,8 +35,8 @@ describe('Test environment variables', () => {
     expect(SENTRY_DSN).toEqual(jasmine.any(String));
   });
 
-  it('should have SENTRY_DSN', () => {
-    expect(SENTRY_DSN).toEqual(jasmine.any(String));
+  it('should have CORS_ORIGIN', () => {
+    expect(CORS_ORIGIN).toEqual(jasmine.any(String));
   });
 
   it('should have GOOGLE_CLIENT_ID', () => {
@@ -36,5 +45,40 @@ describe('Test environment variables', () => {
 
   it('should have GOOGLE_CLIENT_SECRET', () => {
     expect(GOOGLE_CLIENT_SECRET).toEqual(jasmine.any(String));
+  });
+
+  it('should have GOOGLE_REDIRECT_URI', () => {
+    expect(GOOGLE_REDIRECT_URI).toEqual(jasmine.any(String));
+  });
+
+  it('should have FB_APP_ID', () => {
+    expect(FB_APP_ID).toEqual(jasmine.any(String));
+  });
+
+  it('should have FB_REDIRECT_URI', () => {
+    expect(FB_REDIRECT_URI).toEqual(jasmine.any(String));
+  });
+
+  it('should have FB_CLIENT_SECRET', () => {
+    expect(FB_CLIENT_SECRET).toEqual(jasmine.any(String));
+  });
+
+  it('should have HTTPS_PORT', () => {
+    expect(HTTPS_PORT).toEqual(jasmine.any(String));
+  });
+  it('should have HTTPS_CERT', () => {
+    expect(HTTPS_CERT).toEqual(jasmine.any(String));
+  });
+
+  it('should have HTTPS_KEY', () => {
+    expect(HTTPS_KEY).toEqual(jasmine.any(String));
+  });
+
+  it('should have CHAT_API_URL', () => {
+    expect(CHAT_API_URL).toEqual(jasmine.any(String));
+  });
+
+  it('should have CHAT_API_TOKEN', () => {
+    expect(CHAT_API_TOKEN).toEqual(jasmine.any(String));
   });
 });
