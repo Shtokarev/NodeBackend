@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@sentry/node": "5.14.1",
+    "aws-sdk": "^2.656.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "env-cmd": "^10.0.1",
@@ -36,7 +37,8 @@
     "mongodb": "^3.5.1",
     "redis": "^3.0.2",
     "request": "^2.88.2",
-    "request-promise": "^4.2.5"
+    "request-promise": "^4.2.5",
+    "uuidv4": "^6.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
@@ -52,6 +54,7 @@
     "@types/node": "^13.9.1",
     "@types/redis": "^2.8.16",
     "@types/request-promise": "^4.1.46",
+    "@types/uuid": "^7.0.2",
     "@typescript-eslint/eslint-plugin": "^2.16.0",
     "@typescript-eslint/parser": "^2.16.0",
     "babel-jest": "^25.1.0",

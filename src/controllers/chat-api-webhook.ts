@@ -17,7 +17,7 @@ export const chatApiWebhook = async (req: Request, res: Response) => {
     logger.log(author, body, chatId, senderName);
 
     if (message.fromMe) {
-      logger.log('fromMe!'); // test only for me
+      logger.log('fromMe!'); // test bot only for myself
     } else {
       return res.status(200).send();
     }
