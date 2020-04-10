@@ -16,6 +16,8 @@ export const {
   HTTPS_PORT,
   HTTPS_CERT,
   HTTPS_KEY,
+  CHAT_API_URL,
+  CHAT_API_TOKEN,
 } = process.env;
 
 if (!PORT) {
@@ -62,6 +64,14 @@ if (!FB_REDIRECT_URI) {
 
 if (!FB_CLIENT_SECRET) {
   throw new Error('FB_CLIENT_SECRET environment variable is required.');
+}
+
+if (!CHAT_API_URL) {
+  throw new Error('CHAT_API_URL environment variable is required.');
+}
+
+if (!CHAT_API_TOKEN) {
+  throw new Error('CHAT_API_TOKEN environment variable is required.');
 }
 
 export let key: Buffer;
