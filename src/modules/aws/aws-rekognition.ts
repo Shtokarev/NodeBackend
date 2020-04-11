@@ -8,6 +8,7 @@ const credentialProvider = new AWS.CredentialProviderChain();
 
 export const getAwsModerationLabels = async (url: string): Promise<string> => {
   try {
+    logger.log(`AWS Rekognition image. url = ${url}`);
     const region = MEDIA_BUCKET_REGION;
 
     const rekognition = new AWS.Rekognition({
@@ -50,11 +51,12 @@ export const getAwsModerationLabels = async (url: string): Promise<string> => {
     }
 
     const labelsString = result.ModerationLabels
-      .filter(item => item.ParentName !== '')
+      .filter(item => (item.ParentName !== '' && typeof item.ParentName !== 'undefined'))
       .map(item => `${item.Name} - ${item.Confidence.toFixed(1)}%`)
       .join(', ');
 
     return labelsString;
+
   } catch (error) {
     logger.log(error);
     return error.message;
