@@ -4,6 +4,7 @@ import https from 'https';
 import logger from './utils/logger';
 import { initMongodbClient } from './utils/init-mongo';
 import { initRedisClient } from './utils/init-redis';
+import { initDynamoDb } from './utils/init-dynamodb';
 import {
   PORT,
   REDIS_HOST,
@@ -40,7 +41,9 @@ const loadAppDependencies = async (): Promise<AppConfiguration> => {
     logger.log(error);
   }
 
-  return { db, redis, sentry };
+  const dynamodb = initDynamoDb();
+
+  return { db, redis, sentry, dynamodb };
 };
 
 const loadApplication = async () => {
