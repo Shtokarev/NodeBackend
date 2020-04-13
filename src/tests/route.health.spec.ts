@@ -6,6 +6,7 @@ import initApp, { killApplicaton } from '../app';
 describe('Server /api/health route', () => {
   let db;
   let redis;
+  let dynamodb;
   let result;
   let application;
   const path = '/api/health';
@@ -15,6 +16,7 @@ describe('Server /api/health route', () => {
       express: 'ok',
       mongodb: 'ok',
       redis: 'ok',
+      dynamodb: 'ok',
     };
 
     db = {
@@ -25,7 +27,13 @@ describe('Server /api/health route', () => {
       ping: () => Promise.resolve(true),
     };
 
-    application = await initApp({ db, redis });
+    dynamodb = {
+      db: {
+        listTables: (opt, cb) => cb(),
+      }
+    };
+
+    application = await initApp({ db, redis, dynamodb });
   });
 
   afterAll(() => {
@@ -46,6 +54,7 @@ describe('Server /api/health route', () => {
       express: 'ok',
       mongodb: 'error',
       redis: 'ok',
+      dynamodb: 'ok',
     };
 
     const response = await request(application).get(path);
@@ -62,6 +71,7 @@ describe('Server /api/health route', () => {
       express: 'ok',
       mongodb: 'ok',
       redis: 'error',
+      dynamodb: 'ok',
     };
 
     const response = await request(application).get(path);
@@ -78,6 +88,24 @@ describe('Server /api/health route', () => {
       express: 'ok',
       mongodb: 'ok',
       redis: 'no pong received from redis',
+      dynamodb: 'ok',
+    };
+
+    const response = await request(application).get(path);
+
+    expect(spyOnStats).toHaveBeenCalledTimes(1);
+    expect(response.status).toBe(500);
+    expect(JSON.parse(response.text)).toEqual(result);
+    done();
+  });
+
+  it('should return status 500 and specified error if DynamoDB is not working', async (done) => {
+    const spyOnStats = spyOn(dynamodb.db, 'listTables').and.callFake((opt, cb) => cb(new Error('DynamoDb error')));
+    result = {
+      express: 'ok',
+      mongodb: 'ok',
+      redis: 'ok',
+      dynamodb: 'DynamoDb error',
     };
 
     const response = await request(application).get(path);

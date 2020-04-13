@@ -8,12 +8,15 @@ import { AsyncRedisClient } from './utils/init-redis';
 import logger from './utils/logger';
 import installRoutes from './routes';
 import { CORS_ORIGIN } from './utils/env-loader';
+import { DynamoDbObj } from './utils/init-dynamodb';
 
 
-export type Application = Express & {
+export interface Application extends Express {
   locals: {
     db: Db;
     redis: AsyncRedisClient;
+    sentry: typeof Sentry;
+    dynamodb: DynamoDbObj;
   };
 };
 
@@ -21,6 +24,7 @@ export interface AppConfiguration {
   db?: Db;
   redis?: AsyncRedisClient;
   sentry?: typeof Sentry;
+  dynamodb?: DynamoDbObj;
 }
 
 interface ExpressError {
@@ -90,6 +94,7 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
   application.locals.db = config.db;
   application.locals.redis = config.redis;
   application.locals.sentry = config.sentry;
+  application.locals.dynamodb = config.dynamodb;
 
   return application;
 };
