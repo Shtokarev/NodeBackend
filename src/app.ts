@@ -1,40 +1,20 @@
 import bodyParser from 'body-parser';
-import express, { Express, NextFunction, Request, Response } from 'express';
-import { Db } from 'mongodb';
-import * as Sentry from '@sentry/node';
+import express, { NextFunction, Response } from 'express';
 import cors from 'cors';
-
-import { AsyncRedisClient } from './utils/init-redis';
 import logger from './utils/logger';
 import installRoutes from './routes';
 import { CORS_ORIGIN } from './utils/env-loader';
-import { DynamoDbObj } from './utils/init-dynamodb';
-
-
-export interface Application extends Express {
-  locals: {
-    db: Db;
-    redis: AsyncRedisClient;
-    sentry: typeof Sentry;
-    dynamodb: DynamoDbObj;
-  };
-};
-
-export interface AppConfiguration {
-  db?: Db;
-  redis?: AsyncRedisClient;
-  sentry?: typeof Sentry;
-  dynamodb?: DynamoDbObj;
-}
-
-interface ExpressError {
-  message: string;
-  route: string;
-  status: number;
-}
+import {
+  Application,
+  AppConfiguration,
+  AppRequest,
+  ExpressError,
+  ServerResponse,
+} from './types';
 
 let application: Application = null;
 let appConfig: AppConfiguration = null;
+
 
 const initApp = async (config?: AppConfiguration): Promise<Application> => {
   if (application !== null) {
@@ -73,7 +53,7 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
     application.use(config.sentry.Handlers.errorHandler());
   }
 
-  application.use((error: ExpressError, req: Request, res: Response, next: NextFunction) => {
+  application.use((error: ExpressError, req: AppRequest, res: Response, next: NextFunction) => {
     const errorStatus = error.status || 500;
 
     if (errorStatus >= 500) {
@@ -85,9 +65,10 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
     }
 
     return res.status(errorStatus).json({
+      success: false,
       message: error.message,
       sentry: (res as Response & { sentry: unknown }).sentry,
-    });
+    } as ServerResponse);
   }
   );
 

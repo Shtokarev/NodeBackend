@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-
+import { ServerResponse } from '../types';
 import logger from '../utils/logger';
 import { getApplication } from '../app';
 
@@ -71,5 +71,10 @@ export const health = async (req: Request, res: Response) => {
     status = 500;
   }
 
-  return res.status(status).json(appStatus);
+  const response = {
+    success: true,
+    data: appStatus as unknown,
+  } as ServerResponse;
+
+  return res.status(status).json(response);
 };

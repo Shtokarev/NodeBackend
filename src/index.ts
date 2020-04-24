@@ -1,6 +1,5 @@
 import * as sentry from '@sentry/node';
 import https from 'https';
-
 import logger from './utils/logger';
 import { initMongodbClient } from './utils/init-mongo';
 import { initRedisClient } from './utils/init-redis';
@@ -14,7 +13,8 @@ import {
   key,
   cert,
 } from './utils/env-loader';
-import initApp, { AppConfiguration } from './app';
+import initApp from './app';
+import { AppConfiguration } from './types';
 
 logger.init(console);
 
@@ -48,7 +48,6 @@ const loadAppDependencies = async (): Promise<AppConfiguration> => {
 
 const loadApplication = async () => {
   try {
-
     const app = await initApp(await loadAppDependencies());
 
     app.listen(PORT, () => {

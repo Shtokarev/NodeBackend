@@ -20,6 +20,7 @@ export const {
   CHAT_API_TOKEN,
   MEDIA_BUCKET,
   MEDIA_BUCKET_REGION,
+  JWT_SECRET_KEY,
 } = process.env;
 
 if (!PORT) {
@@ -82,6 +83,10 @@ if (!MEDIA_BUCKET) {
 
 if (!MEDIA_BUCKET_REGION) {
   throw new Error('MEDIA_BUCKET_REGION environment variable is required.');
+}
+
+if (!JWT_SECRET_KEY) {
+  throw new Error('JWT_SECRET_KEY environment variable is required.');
 }
 
 export let key: Buffer;
