@@ -1,8 +1,8 @@
 
 import {
   PORT,
-  REDIS_HOST,
   MONGODB_CONNECTION_STRING,
+  REDIS_HOST,
   SENTRY_DSN,
   CORS_ORIGIN,
   GOOGLE_CLIENT_ID,
@@ -18,6 +18,7 @@ import {
   CHAT_API_TOKEN,
   MEDIA_BUCKET,
   MEDIA_BUCKET_REGION,
+  JWT_SECRET_KEY,
 } from '../utils/env-loader';
 
 describe('Test environment variables', () => {
@@ -75,5 +76,7 @@ describe('Test environment variables', () => {
   it('should have MEDIA_BUCKET_REGION', () => {
     expect(MEDIA_BUCKET_REGION).toEqual(jasmine.any(String));
   });
-
+  it('should have JWT_SECRET_KEY', () => {
+    expect(JWT_SECRET_KEY).toEqual(jasmine.any(String));
+  });
 });
