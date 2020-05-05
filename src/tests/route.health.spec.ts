@@ -31,7 +31,6 @@ describe('Server /api/health route', () => {
 
   beforeEach(async () => {
     result = {
-      success: true,
       data: {
         express: 'ok',
         mongodb: 'ok',
