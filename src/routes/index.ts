@@ -27,13 +27,16 @@ const addRoutesFromFolder = async (subFoldersPath: string, app: Application) => 
       }
 
       const router = Router();
-      const routePath = `/api${subFoldersPath}${routeName}`;
 
-      logger.log(`add route: ${routePath} (${routeName}.${extension})`);
       const routeModule = await import(fullPath);
-      routeModule.default(router);
+      const forceRoute = routeModule.default(router);
+
+      // for reassign default file structure path
+      const routePath = forceRoute ? forceRoute : `/api${subFoldersPath}${routeName}`;
 
       app.use(routePath, router);
+      logger.log(`add route: ${routePath} (${routeName}.${extension})`);
+
     } catch (error) {
       logger.log(`Error loading route in ${fileName} ${error}`);
     }

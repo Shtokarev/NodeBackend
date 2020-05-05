@@ -2,13 +2,15 @@
 import { Request, Response } from 'express';
 
 import logger from '../utils/logger';
+import { ServerResponse } from '../types';
 
 
 export const test = (req: Request, res: Response) => {
   logger.log('incoming GET on route /test');
-  logger.error('ERROR log incoming GET on route /test');
 
-  // res.json(result);
-  // res.send('Hello world!');
-  throw new Error('test error');
+  const response: ServerResponse = {
+    data: { array: ['Hello', 'world', 'response', '!'] },
+  };
+
+  return res.status(200).json(response);
 };

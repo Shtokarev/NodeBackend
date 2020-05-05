@@ -40,6 +40,7 @@
     "redis": "^3.0.2",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
+    "stripe": "^8.49.0",
     "uuidv4": "^6.0.7"
   },
   "devDependencies": {

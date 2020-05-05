@@ -20,7 +20,16 @@ export interface AppConfiguration {
   dynamodb?: DynamoDbObj;
 }
 
-export type AppRequest = Request;
+export interface TokenPayload {
+  id: string;
+  email: string;
+  role: AccountsType;
+  exp: number;
+}
+
+export interface AppRequest extends Request {
+  user: TokenPayload;
+}
 
 export interface ResponseError {
   message: string,
@@ -28,7 +37,6 @@ export interface ResponseError {
 }
 
 export interface ServerResponse {
-  success: boolean;
   error?: ResponseError;
   data?: Record<string, unknown>;
   sentry?: string;
@@ -54,6 +62,17 @@ export interface User {
   avatar?: string;
   fbId?: string;
   googleId?: string;
+}
+
+export type TokensType = 'access' | 'refresh';
+
+export interface Tokens {
+  id?: string
+  _id?: string;
+  token: string;
+  fingerprint: string;
+  userId: string;
+  type: TokensType;
 }
 
 export interface FacadeResult<T> {

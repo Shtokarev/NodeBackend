@@ -65,12 +65,10 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
     }
 
     return res.status(errorStatus).json({
-      success: false,
       message: error.message,
       sentry: (res as Response & { sentry: unknown }).sentry,
     } as ServerResponse);
-  }
-  );
+  });
 
   application.locals.db = config.db;
   application.locals.redis = config.redis;

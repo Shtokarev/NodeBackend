@@ -72,7 +72,6 @@ export const health = async (req: Request, res: Response) => {
   }
 
   const response = {
-    success: true,
     data: appStatus as unknown,
   } as ServerResponse;
 
