@@ -1,13 +1,15 @@
 import { Response } from 'express';
-import { AppRequest, ServerResponse } from '../../types';
+import { AppRequest, ServerResponse, Tokens } from '../../types';
 import { createToken } from '../../utils/create-tokens';
 import { createUser } from '../../facades/users';
 import logger from '../../utils/logger';
 import { getHash } from '../../utils/hash';
+import { saveRefreshToken } from '../../facades/tokens';
 
 export const singUp = async (req: AppRequest, res: Response) => {
-  const { role, email, password } = req.body;
-  const response = { success: false } as ServerResponse;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { role, email, password, fingerprint, pin } = req.body;
+  const response = {} as ServerResponse;
   logger.log('incoming POST on route /sign-up');
 
   try {
@@ -25,6 +27,8 @@ export const singUp = async (req: AppRequest, res: Response) => {
 
     req.body.passwordHash = await getHash(password);
     delete req.body.password;
+    delete req.body.pin;
+    delete req.body.fingerprint;
 
     const facadeResult = await createUser(req.body);
 
@@ -38,9 +42,16 @@ export const singUp = async (req: AppRequest, res: Response) => {
 
     const accessToken = await createToken(profile.id, profile.email, profile.role);
     const refreshToken = await createToken(profile.id, profile.email, profile.role, true);
-    response.data = { profile, accessToken, refreshToken };
-    response.success = true;
 
+    const saveToken: Tokens = {
+      type: 'refresh',
+      token: refreshToken,
+      fingerprint,
+      userId: profile.id,
+    };
+    await saveRefreshToken(saveToken);
+
+    response.data = { profile, accessToken, refreshToken };
     res.status(201).json(response);
 
   } catch (error) {

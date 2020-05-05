@@ -1,15 +1,17 @@
 import { Response } from 'express';
-import { AppRequest, ServerResponse } from '../../types';
+import { AppRequest, ServerResponse, Tokens } from '../../types';
 import { createToken } from '../../utils/create-tokens';
 import logger from '../../utils/logger';
 import { checkHash } from '../../utils/hash';
 import { getUserByEmail } from '../../facades/users';
+import { saveRefreshToken } from '../../facades/tokens';
 
 export const singIn = async (req: AppRequest, res: Response) => {
-  const response = { success: false } as ServerResponse;
+  logger.log('incoming POST on route /sign-in');
+  const response = {} as ServerResponse;
 
   try {
-    const { email, password } = req.body;
+    const { email, password, fingerprint } = req.body;
 
     if (!email) {
       response.error = {
@@ -30,7 +32,7 @@ export const singIn = async (req: AppRequest, res: Response) => {
     const facadeResult = await getUserByEmail(email);
 
     if (!facadeResult.success) {
-      throw new Error();
+      throw facadeResult.error || new Error('error in getUserByEmail');
     }
 
     const profile = facadeResult.result;
@@ -57,9 +59,16 @@ export const singIn = async (req: AppRequest, res: Response) => {
 
     const accessToken = await createToken(profile.id, profile.email, profile.role);
     const refreshToken = await createToken(profile.id, profile.email, profile.role, true);
-    response.data = { profile, accessToken, refreshToken };
-    response.success = true;
 
+    const saveToken: Tokens = {
+      type: 'refresh',
+      token: refreshToken,
+      fingerprint,
+      userId: profile.id,
+    };
+    await saveRefreshToken(saveToken);
+
+    response.data = { profile, accessToken, refreshToken };
     res.status(201).json(response);
 
   } catch (error) {
