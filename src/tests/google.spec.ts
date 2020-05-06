@@ -2,8 +2,9 @@
 import nock from 'nock';
 import request from 'supertest';
 
-import initApp, { killApplicaton, Application } from '../app';
+import initApp, { killApplicaton } from '../app';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI } from '../utils/env-loader';
+import { Application } from '../types';
 
 describe('Google auth callback', () => {
   let app: Application;

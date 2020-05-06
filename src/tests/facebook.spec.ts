@@ -2,7 +2,8 @@
 import nock from 'nock';
 import request from 'supertest';
 
-import initApp, { killApplicaton, Application } from '../app';
+import initApp, { killApplicaton } from '../app';
+import { Application } from '../types';
 import { FB_APP_ID, FB_REDIRECT_URI, FB_CLIENT_SECRET } from '../utils/env-loader';
 
 const FB_PAGE_LIMIT = 1;
@@ -80,7 +81,7 @@ describe('Facebook auth callback', () => {
       .get(`/v6.0/${facebookUserUnfoResponse.id}/friends?access_token=${access_token}&summary=total_count&limit=${FB_PAGE_LIMIT}&after=QVFIUlpCRVZ`)
       .reply(200, () => fBfriendsResponse2);
 
-    expect.assertions(7);
+    (expect as any).assertions(7);
 
     const response = await request(app).get('/api/auth/facebook/callback').query({ code, state, scope });
 

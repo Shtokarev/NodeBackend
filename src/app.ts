@@ -35,7 +35,7 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
     type: ['application/json', 'text/plain'],
   }));
 
-  const whiteCorsList = [CORS_ORIGIN, 'localhost:3000'];
+  const whiteCorsList = CORS_ORIGIN.split(' ');
   const corsOptions = {
     origin: function (origin: string, callback: Function) {
       if (whiteCorsList.indexOf(origin) !== -1 || !origin) {

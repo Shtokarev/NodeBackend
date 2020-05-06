@@ -1,7 +1,7 @@
 import request from 'supertest';
 
-import initApp, { AppConfiguration, killApplicaton } from '../app';
-
+import initApp, { killApplicaton } from '../app';
+import { AppConfiguration } from '../types';
 
 describe('Server /api/test route', () => {
   const config: AppConfiguration = {};
