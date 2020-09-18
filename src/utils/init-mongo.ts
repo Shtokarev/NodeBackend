@@ -6,11 +6,9 @@ export interface MongodbFactoryProps {
   connectionString: string;
 }
 
-let db: Db = null;
-
 export const initMongodbClient = async ({ connectionString }: MongodbFactoryProps): Promise<Db> => {
   try {
-    db = await new Promise((resolve, reject) => {
+    const db: Db = await new Promise((resolve, reject) => {
       const mongoClient = new MongoClient(connectionString, {
         useUnifiedTopology: true,
         ignoreUndefined: true,
@@ -30,10 +28,11 @@ export const initMongodbClient = async ({ connectionString }: MongodbFactoryProp
       });
     });
 
-    logger.log(`mongodb connected: ${connectionString}`);
+    logger.log(`mongodb connected: ${connectionString}.`);
+    return db;
+
   } catch (error) {
     logger.error(`Error in mongoClient.connect: ${error}`);
+    return;
   }
-
-  return db;
 };

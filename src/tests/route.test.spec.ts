@@ -1,11 +1,11 @@
 import request from 'supertest';
 
-import initApp, { AppConfiguration, killApplicaton } from '../app';
+import initApp, { killApplicaton } from '../app';
+import { AppConfiguration } from '../types';
 
-
-describe('Server /test route', () => {
+describe('Server /api/test route', () => {
   const config: AppConfiguration = {};
-  const path = '/test';
+  const path = '/api/test';
 
   let application;
 
@@ -20,7 +20,7 @@ describe('Server /test route', () => {
   it('should return status 200', async (done) => {
     const response = await request(application).get(path);
 
-    expect(response.status).toBe(500);
+    expect(response.status).toBe(401);
     // expect(response.text).toBe('Hello world!');
     done();
   });

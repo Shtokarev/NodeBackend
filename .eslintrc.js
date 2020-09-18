@@ -28,5 +28,7 @@ module.exports = {
     "@typescript-eslint/no-use-before-define": ["error", { "functions": false }],
     "semi": ["warn", "always"],
     "quotes": ["error", "single"],
+    "@typescript-eslint/camelcase": 0,
+    "@typescript-eslint/no-use-before-define": 0
   },
 };

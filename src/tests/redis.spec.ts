@@ -14,7 +14,7 @@ describe('Redis initializing', () => {
     const host = 'testHostName';
     initRedisClient({ host });
 
-    expect(mockCreateClient).toHaveBeenCalledWith({ host });
+    expect(mockCreateClient).toHaveBeenCalledWith({ host, retry_strategy: expect.any(Function) });
   });
 
   it('autoReconnect should handle redis.on "error" signal', () => {

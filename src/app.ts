@@ -1,41 +1,27 @@
 import bodyParser from 'body-parser';
-import express, { Express, NextFunction, Request, Response } from 'express';
-import { Db } from 'mongodb';
-import * as Sentry from '@sentry/node';
-
-import { AsyncRedisClient } from './utils/init-redis';
+import express, { NextFunction, Response } from 'express';
+import cors from 'cors';
 import logger from './utils/logger';
 import installRoutes from './routes';
-
-
-export type Application = Express & {
-  locals: {
-    db: Db;
-    redis: AsyncRedisClient;
-  };
-};
-
-export interface AppConfiguration {
-  db?: Db;
-  redis?: AsyncRedisClient;
-  sentry?: typeof Sentry;
-}
-
-interface ExpressError {
-  message: string;
-  route: string;
-  status: number;
-}
+import { CORS_ORIGIN } from './utils/env-loader';
+import {
+  Application,
+  AppConfiguration,
+  AppRequest,
+  ExpressError,
+  ServerResponse,
+} from './types';
 
 let application: Application = null;
 let appConfig: AppConfiguration = null;
+
 
 const initApp = async (config?: AppConfiguration): Promise<Application> => {
   if (application !== null) {
     return application;
   }
 
-  logger.log('application initialized');
+  logger.log('application initialized.');
 
   appConfig = config;
   application = express();
@@ -45,7 +31,21 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
   }
 
   application.use(bodyParser.urlencoded({ extended: true }));
-  application.use(bodyParser.json());
+  application.use(bodyParser.json({
+    type: ['application/json', 'text/plain'],
+  }));
+
+  const whiteCorsList = CORS_ORIGIN.split(' ');
+  const corsOptions = {
+    origin: function (origin: string, callback: Function) {
+      if (whiteCorsList.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  };
+  application.use(cors(corsOptions));
 
   await installRoutes(application);
 
@@ -53,7 +53,7 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
     application.use(config.sentry.Handlers.errorHandler());
   }
 
-  application.use((error: ExpressError, req: Request, res: Response, next: NextFunction) => {
+  application.use((error: ExpressError, req: AppRequest, res: Response, next: NextFunction) => {
     const errorStatus = error.status || 500;
 
     if (errorStatus >= 500) {
@@ -67,13 +67,13 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
     return res.status(errorStatus).json({
       message: error.message,
       sentry: (res as Response & { sentry: unknown }).sentry,
-    });
-  }
-  );
+    } as ServerResponse);
+  });
 
   application.locals.db = config.db;
   application.locals.redis = config.redis;
   application.locals.sentry = config.sentry;
+  application.locals.dynamodb = config.dynamodb;
 
   return application;
 };
