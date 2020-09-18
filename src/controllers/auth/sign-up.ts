@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { RequestHandler } from 'express';
 import { AppRequest, ServerResponse, Tokens } from '../../types';
 import { createToken } from '../../utils/create-tokens';
 import { createUser } from '../../facades/users';
@@ -6,7 +6,7 @@ import logger from '../../utils/logger';
 import { getHash } from '../../utils/hash';
 import { saveRefreshToken } from '../../facades/tokens';
 
-export const singUp = async (req: AppRequest, res: Response) => {
+export const singUp: RequestHandler = async (req: AppRequest, res) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { role, email, password, fingerprint, pin } = req.body;
   const response = {} as ServerResponse;

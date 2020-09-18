@@ -36,7 +36,7 @@ const apiChatApi = async (method: string, params: any): Promise<any> => {
   }
 };
 
-export const botWorker = async (message: WhatsAppMessage) => {
+export const botWorker = async (message: WhatsAppMessage): Promise<void> => {
   const { body, chatId } = message;
 
   try {

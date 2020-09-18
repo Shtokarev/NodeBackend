@@ -1,8 +1,8 @@
-import { Response, NextFunction } from 'express';
+import { RequestHandler } from 'express';
 import { AppRequest, ServerResponse } from '../types';
 import { getUserByEmail } from '../facades/users';
 
-export const mwCheckUniqueEmail = async (req: AppRequest, res: Response, next: NextFunction) => {
+export const mwCheckUniqueEmail: RequestHandler = async (req: AppRequest, res, next) => {
   const { email } = req.body;
   const response = {} as ServerResponse;
 

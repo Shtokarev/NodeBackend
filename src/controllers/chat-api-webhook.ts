@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
 
 import logger from '../utils/logger';
 import { WhatsAppMessage, botWorker } from '../modules/chatApi/chatBot';
 
 
-export const chatApiWebhook = async (req: Request, res: Response) => {
+export const chatApiWebhook: RequestHandler = async (req, res) => {
   logger.log('incoming POST on route /chat-api-webhook');
 
   const { messages }: { messages: WhatsAppMessage[] } = req.body;

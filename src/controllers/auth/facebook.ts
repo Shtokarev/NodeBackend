@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
-import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import rp from 'request-promise';
 
 import logger from '../../utils/logger';
@@ -7,7 +6,7 @@ import { FB_APP_ID, FB_REDIRECT_URI, FB_CLIENT_SECRET } from '../../utils/env-lo
 
 const FB_PAGE_LIMIT = 1;
 
-export const facebookCallback = async (req: Request, res: Response) => {
+export const facebookCallback: RequestHandler = async (req, res) => {
   const { error, code, scope, state } = req.query;
 
   try {
@@ -49,14 +48,14 @@ export const facebookCallback = async (req: Request, res: Response) => {
 
       } while (next);
 
-    } catch (error) {
-      logger.log(error.message);
+    } catch (err) {
+      logger.log(err.message);
     }
 
     let query;
 
     try {
-      query = JSON.parse(state);
+      query = JSON.parse(state as string);
 
       if (!query) {
         throw new Error('no query (state) params');
@@ -68,8 +67,8 @@ export const facebookCallback = async (req: Request, res: Response) => {
     logger.log('incoming GET on route /auth/facebock/callback');
 
     res.json({ code, scope, access_token, result: profile, query, friendsArray });
-  } catch (error) {
-    logger.error(error.message);
+  } catch (err) {
+    logger.error(err.message);
     res.status(500).json(error);
   }
 };

@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { RequestHandler } from 'express';
 import { AppRequest, ServerResponse, Tokens } from '../../types';
 import { createToken } from '../../utils/create-tokens';
 import logger from '../../utils/logger';
@@ -6,7 +6,7 @@ import { checkHash } from '../../utils/hash';
 import { getUserByEmail } from '../../facades/users';
 import { saveRefreshToken } from '../../facades/tokens';
 
-export const singIn = async (req: AppRequest, res: Response) => {
+export const singIn: RequestHandler = async (req: AppRequest, res) => {
   logger.log('incoming POST on route /sign-in');
   const response = {} as ServerResponse;
 

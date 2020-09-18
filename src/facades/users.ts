@@ -6,14 +6,6 @@ import { User, FacadeResult } from '../types';
 
 const application = getApplication();
 
-export const getUserByEmail = (email: string): Promise<FacadeResult<User>> => {
-  return getUser({ email });
-};
-
-export const getUserById = (id: string): Promise<FacadeResult<User>> => {
-  return getUser({ id });
-};
-
 export const getUser = async (matchObj: Partial<User>): Promise<FacadeResult<User>> => {
   const result = { success: true } as FacadeResult<User>;
 
@@ -46,6 +38,14 @@ export const getUser = async (matchObj: Partial<User>): Promise<FacadeResult<Use
   }
 
   return result;
+};
+
+export const getUserByEmail = (email: string): Promise<FacadeResult<User>> => {
+  return getUser({ email });
+};
+
+export const getUserById = (id: string): Promise<FacadeResult<User>> => {
+  return getUser({ id });
 };
 
 export const createUser = async (user: User): Promise<FacadeResult<User>> => {

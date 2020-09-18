@@ -92,7 +92,7 @@ export const findRefreshToken = async (token: string): Promise<FacadeResult<Toke
   return result;
 };
 
-export const deleteRefreshToken = async (token: string) => {
+export const deleteRefreshToken = async (token: string): Promise<void> => {
 
   // mongodb version
   try {

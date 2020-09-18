@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser';
 import express, { NextFunction, Response } from 'express';
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 import logger from './utils/logger';
 import installRoutes from './routes';
 import { CORS_ORIGIN } from './utils/env-loader';
@@ -36,8 +36,8 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
   }));
 
   const whiteCorsList = CORS_ORIGIN.split(' ');
-  const corsOptions = {
-    origin: function (origin: string, callback: Function) {
+  const corsOptions: CorsOptions = {
+    origin: function (origin, callback) {
       if (whiteCorsList.indexOf(origin) !== -1 || !origin) {
         callback(null, true);
       } else {
@@ -78,7 +78,7 @@ const initApp = async (config?: AppConfiguration): Promise<Application> => {
   return application;
 };
 
-export const killApplicaton = () => {
+export const killApplicaton = (): void => {
   application = null;
 };
 

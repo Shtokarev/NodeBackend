@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 import request from 'request';
 import stream from 'stream';
-import uuidv4 from 'uuid/v4';
+import { v4 as uuidv4 } from 'uuid';
 
 import logger from '../../utils/logger';
 import { MEDIA_BUCKET, MEDIA_BUCKET_REGION } from '../../utils/env-loader';
@@ -107,7 +107,7 @@ export const uploadImage2S3Bucket = async (url: string): Promise<UploadResult> =
   }
 };
 
-const generatePathPrefix = (): string => {
+function generatePathPrefix(): string {
   const dictionary = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
   return dictionary[Math.floor(Math.random() * dictionary.length)]

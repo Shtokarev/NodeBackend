@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import rp from 'request-promise';
 
 import logger from '../../utils/logger';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI } from '../../utils/env-loader';
 
-export const googleCallback = async (req: Request, res: Response) => {
+export const googleCallback: RequestHandler = async (req, res) => {
   const { error, code, scope, state } = req.query;
 
   try {
@@ -16,7 +16,7 @@ export const googleCallback = async (req: Request, res: Response) => {
     let stateParamsObj;
     if (state) {
       try {
-        stateParamsObj = JSON.parse(state);
+        stateParamsObj = JSON.parse(state as string);
       } catch (error) {
         logger.error(error);
       }

@@ -4,21 +4,18 @@ import { Db } from 'mongodb';
 import { DynamoDbObj } from './utils/init-dynamodb';
 import { AsyncRedisClient } from './utils/init-redis';
 
-export interface Application extends Express {
-  locals: {
-    db: Db;
-    redis: AsyncRedisClient;
-    sentry: typeof Sentry;
-    dynamodb: DynamoDbObj;
-  };
-};
-
-export interface AppConfiguration {
+export interface ExpressLocals {
   db?: Db;
   redis?: AsyncRedisClient;
   sentry?: typeof Sentry;
   dynamodb?: DynamoDbObj;
-}
+};
+
+export interface Application extends Express {
+  locals: ExpressLocals;
+};
+
+export type AppConfiguration = ExpressLocals;
 
 export interface TokenPayload {
   id: string;

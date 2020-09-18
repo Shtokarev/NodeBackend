@@ -41,4 +41,4 @@ export const verifyToken = async (token: string): Promise<TokenPayload> => {
   });
 };
 
-export const decodeToken = (token: string) => jwt.decode(token);
+export const decodeToken = (token: string): null | Record<string, unknown> | string => jwt.decode(token);

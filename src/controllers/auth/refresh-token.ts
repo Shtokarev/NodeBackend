@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { RequestHandler } from 'express';
 
 import { AppRequest, ServerResponse, Tokens } from '../../types';
 import { createToken } from '../../utils/create-tokens';
@@ -11,7 +11,7 @@ import {
 } from '../../facades/tokens';
 import { verifyToken } from '../../utils/create-tokens';
 
-export const refreshToken = async (req: AppRequest, res: Response) => {
+export const refreshToken: RequestHandler = async (req: AppRequest, res) => {
   const response = {} as ServerResponse;
   logger.log('incoming POST on route /refresh-token');
 

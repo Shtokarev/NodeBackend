@@ -1,8 +1,8 @@
-import { Response, NextFunction } from 'express';
+import { RequestHandler } from 'express';
 import { AppRequest, ServerResponse } from '../types';
 import { verifyToken } from '../utils/create-tokens';
 
-export const mwCheckAuthToken = async (req: AppRequest, res: Response, next: NextFunction) => {
+export const mwCheckAuthToken: RequestHandler = async (req: AppRequest, res, next) => {
   const response = {} as ServerResponse;
 
   if (req.method === 'OPTIONS') {

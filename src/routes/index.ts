@@ -43,6 +43,6 @@ const addRoutesFromFolder = async (subFoldersPath: string, app: Application) => 
   }
 };
 
-export default async (app: Application) => {
+export default async (app: Application): Promise<void> => {
   await addRoutesFromFolder('/', app);
 };

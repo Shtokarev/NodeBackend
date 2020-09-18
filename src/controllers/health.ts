@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import { ServerResponse } from '../types';
 import logger from '../utils/logger';
 import { getApplication } from '../app';
@@ -12,7 +12,7 @@ interface ServerStatus {
   dynamodb: string;
 }
 
-export const health = async (req: Request, res: Response) => {
+export const health: RequestHandler = async (req, res) => {
   const appStatus = { express: 'ok' } as ServerStatus;
   logger.log('incoming GET on route /health');
 

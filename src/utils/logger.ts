@@ -1,26 +1,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+type ConsoleFunction = (...args: any) => void;
+
 interface Console {
-  error: Function;
-  log: Function;
-  warn: Function;
+  error: ConsoleFunction;
+  log: ConsoleFunction;
+  warn: ConsoleFunction;
 }
 
-const dumpFunction: Function = () => { /*-empty-*/ };
+export interface Logger extends Console {
+  actingConsole: Console;
+  init: (console: Console) => Logger;
+}
 
-const logger = {
+const dumpFunction: ConsoleFunction = () => { /*-empty-*/ };
+
+const logger: Logger = {
   actingConsole: {
     error: dumpFunction,
     log: dumpFunction,
     warn: dumpFunction,
-  } as Console,
-
-  init: (console: { error: Function; log: Function; warn: Function }) => {
+  },
+  init: (console) => {
     logger.actingConsole = console;
     return logger;
   },
-  error: (...x: any) => logger.actingConsole.error(...x),
-  log: (...x: any) => logger.actingConsole.log(...x),
-  warn: (...x: any) => logger.actingConsole.warn(...x),
+  error: (...args: any) => logger.actingConsole.error(...args),
+  log: (...args: any) => logger.actingConsole.log(...args),
+  warn: (...args: any) => logger.actingConsole.warn(...args),
 };
 
 export default logger;
