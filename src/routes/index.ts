@@ -19,7 +19,7 @@ const addRoutesFromFolder = async (subFoldersPath: string, app: Application) => 
       }
 
       const filenameParts = fileName.split('.');
-      const routeName = filenameParts[0];
+      const routeName = filenameParts.slice(0, -1).join('.');
       const extension = filenameParts.pop();
 
       if (!['js', 'ts'].includes(extension) || routeName === 'index') {
